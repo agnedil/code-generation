@@ -1,4 +1,4 @@
-# Praxis
+# Testing LLMs on the Code Generation Task
 
 ## Instructions
 1. Install Dependencies: Ensure you have the required packages installed:
