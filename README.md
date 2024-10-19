@@ -4,7 +4,7 @@
 1. Install Dependencies: Ensure you have the required packages installed:
 
 ```bash
-pip install openai
+pip install openai```
 
 2. Download the HumanEval Dataset as the human_eval.jsonl file from the OpenAI HumanEval repository at https://github.com/openai/human-eval/tree/master/data and save it as human_eval.jsonl in the same directory as your script.
 
@@ -13,11 +13,11 @@ pip install openai
 3. Set your OpenAI API Key - export your API key as an environment variable:
 
 ```bash
-export OPENAI_API_KEY='your-api-key-here'
+export OPENAI_API_KEY='your-api-key-here'```
 
 4. Run the Script: Execute the script using Python 3:
 ```bash
-python your_script_name.py
+python your_script_name.py```
 
 
 
