@@ -1,0 +1,4 @@
+Summary of code modifications (all in execution.py):
+* Add class DillProcess to fix the pickling issue (uses dill instead of pickle).
+* Modify function check_correctness() to have an extra argument use_prompt which controls the exclusion or addition of problem["prompt"] to the Python program to be run. The body of the function is modified to accommodate for the use of use_prompt.
+* Modify exception handling to add error tracebacks (helps when the error message is empty).
