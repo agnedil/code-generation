@@ -6,7 +6,7 @@ import itertools
 import numpy as np
 import tqdm
 
-from human_eval.data import HUMAN_EVAL, read_problems, stream_jsonl, write_jsonl
+from human_eval.data import HUMAN_EVAL, MBPP_TEST, read_problems, stream_jsonl, write_jsonl
 from human_eval.execution import check_correctness
 
 
@@ -41,14 +41,24 @@ def evaluate_functional_correctness(
     k: List[int] = [1, 10, 100],
     n_workers: int = 4,
     timeout: float = 3.0,
-    problem_file: str = HUMAN_EVAL,
+    mode: str = 'human_eval',
 ):
     """
     Evaluates the functional correctness of generated samples, and writes
     results to f"{sample_file}_results.jsonl.gz"
+
+    :param mode:
+        'human_eval_with_prompt' - using HumanEval dataset with problem["prompt"] (func header & docstring) + completion;
+        'human_eval' - using HumanEval dataset w/out problem["prompt"] because the completion already includes func header;
+        'mbpp' - using MBPP dataset.
     """
 
-    problems = read_problems(problem_file)
+    if mode in ['human_eval', 'human_eval_with_prompt']:
+        problems = read_problems(HUMAN_EVAL)
+    elif mode == 'mbpp':
+        problems = read_problems(MBPP_TEST)
+    else:
+        raise ValueError('mode can be only human_eval_with_prompt, human_eval, or mbpp')
 
     # Check the generated samples against test suites.
     with ThreadPoolExecutor(max_workers=n_workers) as executor:
@@ -62,7 +72,7 @@ def evaluate_functional_correctness(
         for sample in tqdm.tqdm(stream_jsonl(sample_file)):
             task_id = sample["task_id"]
             completion = sample["completion"]
-            args = (problems[task_id], completion, timeout, completion_id[task_id])
+            args = (problems[task_id], completion, timeout, mode, completion_id[task_id])
             future = executor.submit(check_correctness, *args)
             futures.append(future)
             completion_id[task_id] += 1

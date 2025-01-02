@@ -34,12 +34,17 @@ def check_correctness(
         problem: Dict,
         completion: str,
         timeout: float,
+        mode: str,
         completion_id: Optional[int] = None,
-        use_prompt: Optional[bool] = False,        # modification from the the original OpenAI code
         ) -> Dict:
     """
     Evaluates the functional correctness of a completion by running the test
-    suite provided in the problem. 
+    suite provided in the problem.
+
+    :param mode:
+        'human_eval_with_prompt' - using HumanEval dataset with problem["prompt"] (func header & docstring) + completion;
+        'human_eval' - using HumanEval dataset w/out problem["prompt"] because the completion already includes func header;
+        'mbpp' - using MBPP dataset.
 
     :param completion_id: an optional completion ID so we can match
         the results later even if execution finishes asynchronously.
@@ -60,20 +65,27 @@ def check_correctness(
             reliability_guard()
 
             # Construct the check program and run it (with modifications
-            # from the the original OpenAI code - using the use_prompt flag.
-            if use_prompt:
+            # from the the original OpenAI code - using mode).
+            if mode == 'human_eval_with_prompt':                  # problem["prompt"] (func header & docstring) + completion
                 check_program = (
-                    problem["prompt"] + '\n' +                  # problem["prompt"] is included
+                    problem["prompt"] + '\n' +
                     completion + "\n" +
                     problem["test"] + "\n" +
                     f"check({problem['entry_point']})"
                 )
-            else:
+            elif mode == 'human_eval':                            # w/out problem["prompt"] - completion includes func header
                 check_program = (
-                    completion + "\n" +                         # problem["prompt"] is excluded
+                    completion + "\n" +
                     problem["test"] + "\n" +
                     f"check({problem['entry_point']})"
                 )
+            elif mode == 'mbpp':                                  # using the MBPP dataset
+                check_program = (
+                    completion + '\n' +
+                    problem['test']
+                )
+            else:
+                raise ValueError('mode can be only human_eval_with_prompt, human_eval, or mbpp')
 
             try:
                 exec_globals = {}
