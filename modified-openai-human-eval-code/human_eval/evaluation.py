@@ -6,7 +6,7 @@ import itertools
 import numpy as np
 import tqdm
 
-from human_eval.data import HUMAN_EVAL, MBPP_TEST, read_problems, stream_jsonl, write_jsonl
+from human_eval.data import HUMAN_EVAL, MBPP_TEST, LBPP_TEST, BIGCODE_TEST, read_problems, stream_jsonl, write_jsonl
 from human_eval.execution import check_correctness
 
 
@@ -25,6 +25,7 @@ def estimate_pass_at_k(
         """
         if n - c < k:
             return 1.0
+        # TODO: double check - GPT-o1 says this is incorrectly implemented
         return 1.0 - np.prod(1.0 - k / np.arange(n - c + 1, n + 1))
 
     if isinstance(num_samples, int):
@@ -48,17 +49,22 @@ def evaluate_functional_correctness(
     results to f"{sample_file}_results.jsonl.gz"
 
     :param mode:
-        'human_eval_with_prompt' - using HumanEval dataset with problem["prompt"] (func header & docstring) + completion;
-        'human_eval' - using HumanEval dataset w/out problem["prompt"] because the completion already includes func header;
-        'mbpp' - using MBPP dataset.
+        'human_eval' - using HumanEval dataset;
+        'mbpp' - using MBPP dataset;
+        'lbpp' - using LBPP dataset;
+        'big_code' - using Big Code Bench dataset.
     """
 
-    if mode in ['human_eval', 'human_eval_with_prompt']:
+    if mode == 'human_eval':
         problems = read_problems(HUMAN_EVAL)
     elif mode == 'mbpp':
         problems = read_problems(MBPP_TEST)
+    elif mode == 'lbpp':
+        problems = read_problems(LBPP_TEST)
+    elif mode == 'big_code':
+        problems = read_problems(BIGCODE_TEST)
     else:
-        raise ValueError('mode can be only human_eval_with_prompt, human_eval, or mbpp')
+        raise ValueError('mode can be only "human_eval", "mbpp", "lbpp", or "big_code"')
 
     # Check the generated samples against test suites.
     with ThreadPoolExecutor(max_workers=n_workers) as executor:

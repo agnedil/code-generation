@@ -5,8 +5,10 @@ import os
 
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-HUMAN_EVAL = os.path.join(ROOT, "..", "data", "HumanEval.jsonl.gz")
-MBPP_TEST  = os.path.join(ROOT, "..", "data", "MBPP_Test.jsonl.gz")
+HUMAN_EVAL   = os.path.join(ROOT, "..", "data", "HumanEval.jsonl.gz")
+MBPP_TEST    = os.path.join(ROOT, "..", "data", "MBPP_Test.jsonl.gz")
+LBPP_TEST    = os.path.join(ROOT, "..", "data", "LBPP_Test.jsonl.gz")
+BIGCODE_TEST = os.path.join(ROOT, "..", "data", "Big_Code_Bench_Test.jsonl.gz")
 
 
 def read_problems(evalset_file: str = HUMAN_EVAL) -> Dict[str, Dict]:

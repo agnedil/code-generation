@@ -9,5 +9,6 @@ Summary of code modifications in evaluation.py:
 
 Summary of code modifications in execution.py:
 * Add class DillProcess to fix the pickling issue (uses dill instead of pickle).
-* Modify function check_correctness() to have an extra argument mode which is passed from evaluate_functional_correctness(). The body of the function is modified accordingly to include a different logic depending on mode.
-* Modify exception handling to add error tracebacks (helps when the error message is empty).
+* Modify function check_correctness() to have an extra argument mode which is passed from evaluate_functional_correctness(). The body of the function is modified accordingly to include a different logic depending on mode (human_eval OR MBPP).
+* Added two functions: join_properly() and is_full_function() to help with human_eval evaluation. 
+* Modify exception handling to add error tracebacks (helps when the error message is empty - the traceback describes the error).

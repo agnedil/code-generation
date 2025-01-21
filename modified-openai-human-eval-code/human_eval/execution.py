@@ -13,6 +13,48 @@ from multiprocessing import Process
 import traceback
 
 
+def is_full_function(text: str) -> str:
+    '''
+    Determine if input text is a Python function
+    using simple heuristics (all that's needed)
+    '''
+    lines = text.splitlines()
+    for line in lines:
+        if line.startswith('def ') or line.startswith('async def '):
+            return True
+    return False      
+
+
+def join_properly(signature: str, body: str) -> str:
+    """
+    Join function signature and body, while ensuring proper indentation for body.   
+        :param signature: function signarure, something like 'def my_func(x):'.
+        :param body: function body.
+        :return: A single string that combines the signature and the (re)indented body.
+    """
+    lines = body.splitlines()
+
+    # Strip empty lines
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and not lines[-1].strip():
+        lines.pop()
+
+    if not lines:
+        return signature
+    
+    # Check if first non-empty line starts with space or tab
+    first_line = lines[0]
+    if first_line[:1] in (' ', '\t'):        # already indented
+        final_lines = [signature] + lines
+    else:                                    # needs indentation
+        indentation = '    '
+        indented_lines = [indentation + line for line in lines]
+        final_lines = [signature] + indented_lines
+
+    return '\n'.join(final_lines)
+
+
 class DillProcess(Process):
     '''
     Modification from the the original OpenAI code:
@@ -42,9 +84,10 @@ def check_correctness(
     suite provided in the problem.
 
     :param mode:
-        'human_eval_with_prompt' - using HumanEval dataset with problem["prompt"] (func header & docstring) + completion;
-        'human_eval' - using HumanEval dataset w/out problem["prompt"] because the completion already includes func header;
-        'mbpp' - using MBPP dataset.
+        'human_eval' - using HumanEval dataset;
+        'mbpp' - using MBPP dataset;
+        'lbpp' - using LBPP dataset;
+        'big_code' - using Big Code Bench dataset.
 
     :param completion_id: an optional completion ID so we can match
         the results later even if execution finishes asynchronously.
@@ -60,32 +103,51 @@ def check_correctness(
             rmtree = shutil.rmtree
             rmdir = os.rmdir
             chdir = os.chdir
+            os_unlink = os.unlink
+            os_remove = os.remove
 
             # Disable functionalities that can make destructive changes to the test.
             reliability_guard()
 
             # Construct the check program and run it (with modifications
-            # from the the original OpenAI code - using mode).
-            if mode == 'human_eval_with_prompt':                  # problem["prompt"] (func header & docstring) + completion
-                check_program = (
-                    problem["prompt"] + '\n' +
-                    completion + "\n" +
-                    problem["test"] + "\n" +
-                    f"check({problem['entry_point']})"
-                )
-            elif mode == 'human_eval':                            # w/out problem["prompt"] - completion includes func header
-                check_program = (
-                    completion + "\n" +
-                    problem["test"] + "\n" +
-                    f"check({problem['entry_point']})"
-                )
-            elif mode == 'mbpp':                                  # using the MBPP dataset
+            # from the the original OpenAI code - using mode)
+
+            if mode == 'human_eval':
+                if not is_full_function(completion):                                 # if completion not a full func with def statement
+                    new_completion = join_properly(problem["prompt"], completion)    # join func signature and func body
+                    check_program = (
+                        new_completion + "\n" +
+                        problem["test"] + "\n" +
+                        f"check({problem['entry_point']})"
+                    )
+                else:                                                                 # if completion IS a full func with def statement
+                    check_program = (
+                        completion + "\n" +
+                        problem["test"] + "\n" +
+                        f"check({problem['entry_point']})"
+                    )
+
+            elif mode == 'big_code':
+                if not is_full_function(completion):                                 # if completion not a full func with def statement
+                    new_completion = join_properly(problem["prompt"], completion)    # join func signature and func body
+                    check_program = (
+                        new_completion + "\n" +
+                        problem["test"]
+                    )
+                else:                                                                 # if completion IS a full func with def statement
+                    check_program = (
+                        completion + "\n" +
+                        problem["test"]
+                    )
+
+            elif mode in ['mbpp', 'lbpp']:                                            # using the MBPP or LBPP dataset
                 check_program = (
                     completion + '\n' +
                     problem['test']
                 )
+
             else:
-                raise ValueError('mode can be only human_eval_with_prompt, human_eval, or mbpp')
+                raise ValueError('mode can be only "human_eval", "mbpp", "lbpp" or "big_code"')
 
             try:
                 exec_globals = {}
@@ -114,6 +176,8 @@ def check_correctness(
             shutil.rmtree = rmtree
             os.rmdir = rmdir
             os.chdir = chdir
+            os.unlink = os_unlink
+            os.remove = os_remove
 
     manager = multiprocessing.Manager()
     result = manager.list()
