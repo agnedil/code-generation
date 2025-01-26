@@ -12,9 +12,9 @@ This repository contains the code and text for my doctoral dissertation (Praxis)
 See:
 * Notebook `Visualizing Code Generation Results for Single Models.ipynb` for code generation results visualization for single LLMs.
 * Folder `notebooks` for all the code used in this research including:
-    a) preparing datasets for code generation evaluation,
-    b) running code generation experiments in Google Colab,
-    c) running code generation experiments locally using the `Mistral.ai` and `Replicate.com` APIs. 
+    1. Preparing datasets for code generation evaluation,
+    2. Running code generation experiments in Google Colab,
+    3. Running code generation experiments locally using the `Mistral.ai` and `Replicate.com` APIs to make calls to LLMs. 
 * Folder `logs` for all the logs generated during the evaluation of generated code, so far.
 * Folder `documents` for all supporting documents used to write the Praxis along with the main Praxis document.
 * Folder `modified-openai-human-eval-code` for the modified human-eval package used to evaluate code on four code generation datasets.
