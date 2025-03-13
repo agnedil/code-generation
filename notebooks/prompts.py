@@ -9,10 +9,10 @@ You are a Python software programmer.
 **Instructions**
 As a programmer, you are required to complete the following Python code.
 
-**Code Formatting**
+**Code Format**
 Output the completed code in the following format:
 ```python
-[Code]
+<code>
 ```
 
 **Code To Be Completed**
@@ -30,10 +30,10 @@ You are a Python software programmer.
 4. Output only the complete, runnable Python code with no phrases like "Completion:" or "Here is a completion" and no other headings.
 5. Your output should be with no explanatory text and no other irrelevant content - it should be directly runnable by a Python interpreter without errors.
 
-**Code Formatting**
+**Code Format**
 Output the completed code in the following format:
 ```python
-[Code]
+<code>
 ```
 
 **Function Description**
@@ -58,10 +58,10 @@ You are a Python software programmer.
 As a programmer, you are required to complete the following task:
 {}
 
-**Code Formatting**
+**Code Format**
 Output your code in the following format:
 ```python
-[Code]
+<code>
 ```
 
 Your ouput code should satisfy these tests:
@@ -80,10 +80,10 @@ You are a Python software programmer.
 4. Output only the complete, runnable Python code with no phrases like "Solution:" or "Here is a solution" and no other headings.
 5. Your output should be with no explanatory text and no other irrelevant content - it should be directly runnable by a Python interpreter without errors.
 
-**Code Formatting**
+**Code Format**
 Output your code in the following format:
 ```python
-[Code]
+<code>
 ```
 
 **Task Description**
