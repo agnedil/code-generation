@@ -11,7 +11,7 @@ This repository contains the code and text for my doctoral dissertation (Praxis)
 
 See:
 * Notebook `Visualizing Code Generation Results for Single Models.ipynb` for code generation results visualization for single LLMs.
-* Folder `notebooks` for all the code used in this research including:
+* Top directory for most of the code used in this research including:
     1. Preparing datasets for code generation evaluation,
     2. Running code generation experiments in Google Colab,
     3. Running code generation experiments locally using the `Mistral.ai` and `Replicate.com` APIs to make calls to LLMs. 
