@@ -69,7 +69,7 @@ def generate_response(prompt, tokenizer, model, temperature=1.0, top_p=1.0):
     outputs = model.generate(
         inputs,
         max_new_tokens=MAX_LEN,
-        do_sample=False,                 # False = more deterministic which is suitable for code generation
+        do_sample=False,
         temperature=temperature,
         top_p=top_p,
         #top_k=50,
