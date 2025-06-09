@@ -20,12 +20,11 @@ complete_code_prompt_full = '''
 2. Understand the task described in the starter code, generate the completion, and integrate the completion with the starter code using Python's correct syntax and proper indentation.
 3. Stop generating immediately after the return statement or the final line of the function.
 4. Exclude any non-code content. For example, exclude explanatory text, exclude example usage, exclude test cases, exclude phrases like "Completion:" or "Here is a completion", and exclude any other headings.
-5. Your final output must be only executable Python code. Output NOTHING but the code.
-6. Enclose your final output code in the following code fences:
+5. Your final output must be executable Python code and NOTHING but the code enclosed in the following code fences:
 ```python
 [code]
 ```
-7. Using the above instructions, complete the following Python code:
+6. Using the above instructions, complete the following starter code:
 {}
 '''
 
@@ -72,21 +71,23 @@ complete_task_prompt_full = '''
 2. Understand the task described below and generate an efficient Python solution that successfully passes all the tests listed below.
 3. Stop generating immediately after the return statement or the final line of the function.
 4. Exclude any non-code content. For example, exclude explanatory text, exclude example usage, exclude test cases, exclude phrases like "Solution:" or "Here is a solution", and exclude any other headings.
-5. Your final output must be only executable Python code. Output NOTHING but the code.
-6. Enclose your final output code in the following code fences:
+5. Your final output must be executable Python code and NOTHING but the code enclosed in the following code fences:
 ```python
 [code]
 ```
-7. Using the above instructions, complete the following task:
+6. Using the above instructions, complete the following task:
 {}
 
-8. Verify that your output code satisfies the following tests, but do not include the tests in the output code:
+7. Verify that your output code satisfies the following tests, but do not include the tests in the output code:
 {}
 '''
 
 
+##### REFLECTION PROMPTS #####
+
 reflection_prompt_basic = '''1. Read and understand the REQUIREMENTS and the PROPOSED SOLUTION listed below.
-2. Correct and improve the PROPOSED SOLUTION.
+2. Return an optimized version of the PROPOSED SOLUTION.
+3. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION.
 
 REQUIREMENTS:
 {}
@@ -95,8 +96,9 @@ PROPOSED SOLUTION:
 {}'''
 
 reflection_prompt  = '''1. Carefully read and understand the REQUIREMENTS and the PROPOSED SOLUTION listed below.
-2. Improve the PROPOSED SOLUTION by a) correcting all errors, b) removing redundant code, or c) making any other optimizations.
-3. Enclose the new improved solution in the following code fences:
+2. Return an improved and optimized version of the PROPOSED SOLUTION.
+3. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION.
+4. Your final output must be executable Python code and NOTHING but the code enclosed in the following code fences:
 ```python
 [code]
 ```
@@ -108,12 +110,12 @@ PPROPOSED SOLUTION:
 {}'''
 
 reflection_prompt_full  = '''1. Carefully read and understand the REQUIREMENTS and the PROPOSED SOLUTION listed below.
-2. Improve the PROPOSED SOLUTION by a) correcting all possible errors in the logic or syntax of it, b) removing redundant code, or c) making other optimizations.
-3. Make sure the new improved solution satisfies the REQUIREMENTS in the best possible way.
-4. Stop generating the new improved solution immediately after the return statement or the final line of the function.
-5. Exclude any non-code content. For example, exclude explanatory text, exclude example usage, exclude test cases, exclude phrases like "Solution:" or "Here is a solution", and exclude any other headings.
-6. Your final output must be only executable Python code. Output NOTHING but the code.
-7. Enclose the new improved solution in the following code fences:
+2. Improve and optimize the PROPOSED SOLUTION by a) correcting all possible errors in the logic or syntax, b) optimizing the algorithm and data structures, c) avoiding unnecessary work and removing redundant code, and/or d) making any other possible optimizations.
+3. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION. 
+4. Make sure the new improved solution satisfies the REQUIREMENTS in the best possible way.
+5. Stop generating the new improved solution immediately after the return statement or the final line of the function.
+6. Exclude any non-code content. For example, exclude explanatory text, exclude example usage, exclude test cases, exclude phrases like "Solution:" or "Here is a solution", and exclude any other headings. 
+7. Your final output must be executable Python code and NOTHING but the code enclosed in the following code fences:
 ```python
 [code]
 ```

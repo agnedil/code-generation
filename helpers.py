@@ -1,6 +1,5 @@
 
 import re
-import sys
 import os
 import gzip
 import json
@@ -197,7 +196,7 @@ def get_code_in_fences(code: str) -> str:
     
     fence_pattern = re.compile(r"```[ \t]*(?P<lang>python(?:3)?)", re.IGNORECASE)    # shorter, simpler
     #fence_pattern = re.compile(r"```[ \t]*(?P<lang>python(?:3)?)[ \t]*(?=$|\r?\n)", re.IGNORECASE)
-    match = fence_pattern.search(code)    
+    match = fence_pattern.search(code)
     if match:
         fence = match.group(0)
         _, _, remainder = code.partition(fence)        # extract text from end of fence to end of string
@@ -228,7 +227,9 @@ def is_function(text: str) -> bool:
     ''' Is input text a Python function? '''
     lines = text.splitlines()
     for line in lines:
-        if line.startswith('def ') or line.startswith('async def '):
+        if line.startswith('def ') or line.startswith('async def ') or line.startswith('class '):
+            return True
+        elif re.search(r'=\s*lambda', line):
             return True
     return False
 
