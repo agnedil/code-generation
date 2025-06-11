@@ -86,8 +86,9 @@ complete_task_prompt_full = '''
 ##### REFLECTION PROMPTS #####
 
 reflection_prompt_basic = '''1. Read and understand the REQUIREMENTS and the PROPOSED SOLUTION listed below.
-2. Return an optimized version of the PROPOSED SOLUTION.
-3. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION.
+2. Analyze the PROPOSED SOLUTION for any errors, inefficiencies or inconsistencies.
+3. Generate ONE optimized version of the PROPOSED SOLUTION.
+4. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION.
 
 REQUIREMENTS:
 {}
@@ -96,9 +97,10 @@ PROPOSED SOLUTION:
 {}'''
 
 reflection_prompt  = '''1. Carefully read and understand the REQUIREMENTS and the PROPOSED SOLUTION listed below.
-2. Return an improved and optimized version of the PROPOSED SOLUTION.
-3. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION.
-4. Your final output must be executable Python code and NOTHING but the code enclosed in the following code fences:
+2. Analyze the PROPOSED SOLUTION for any errors, inefficiencies or inconsistencies.
+3. Generate an improved and optimized version of the PROPOSED SOLUTION.
+4. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION.
+5. Your final output must be ONE best solution in the form of executable Python code and NOTHING but the code enclosed in the following code fences:
 ```python
 [code]
 ```
@@ -106,16 +108,17 @@ reflection_prompt  = '''1. Carefully read and understand the REQUIREMENTS and th
 REQUIREMENTS:
 {}
 
-PPROPOSED SOLUTION:
+PROPOSED SOLUTION:
 {}'''
 
 reflection_prompt_full  = '''1. Carefully read and understand the REQUIREMENTS and the PROPOSED SOLUTION listed below.
-2. Improve and optimize the PROPOSED SOLUTION by a) correcting all possible errors in the logic or syntax, b) optimizing the algorithm and data structures, c) avoiding unnecessary work and removing redundant code, and/or d) making any other possible optimizations.
-3. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION. 
-4. Make sure the new improved solution satisfies the REQUIREMENTS in the best possible way.
-5. Stop generating the new improved solution immediately after the return statement or the final line of the function.
-6. Exclude any non-code content. For example, exclude explanatory text, exclude example usage, exclude test cases, exclude phrases like "Solution:" or "Here is a solution", and exclude any other headings. 
-7. Your final output must be executable Python code and NOTHING but the code enclosed in the following code fences:
+2. Analyze the PROPOSED SOLUTION for any errors, inefficiencies or inconsistencies.
+3. Generate an improved and optimized version of the PROPOSED SOLUTION by a) correcting all possible errors in the logic or syntax, b) optimizing the algorithm and data structures, c) avoiding unnecessary work and removing redundant code, and/or d) making any other possible optimizations.
+4. If the PROPOSED SOLUTION is already optimal, return the PROPOSED SOLUTION. 
+5. Make sure the new improved solution satisfies the REQUIREMENTS in the best possible way.
+6. Stop generating the new improved solution immediately after the return statement or the final line of the function.
+7. Exclude any non-code content. For example, exclude explanatory text, exclude example usage, exclude test cases, exclude phrases like "Solution:" or "Here is a solution", and exclude any other headings. 
+8. Your final output must be ONE best solution in the form of executable Python code and NOTHING but the code enclosed in the following code fences:
 ```python
 [code]
 ```
