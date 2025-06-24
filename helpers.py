@@ -52,7 +52,7 @@ def get_model(model_name: str, torch_dtype = torch.float32, ACCESS_TOKEN: str|No
     return model
 
 
-def generate_response(prompt, tokenizer, model, temperature=1.0, top_p=1.0):
+def generate_response(prompt, tokenizer, model, temperature=1.0, top_p=1.0, do_sample=False):
     ''' Tokenize input and make one inference call '''
     messages=[
       { 'role': 'user', 'content': prompt }
@@ -68,7 +68,7 @@ def generate_response(prompt, tokenizer, model, temperature=1.0, top_p=1.0):
     outputs = model.generate(
         inputs,
         max_new_tokens=MAX_LEN,
-        do_sample=False,
+        do_sample=do_sample,
         temperature=temperature,
         top_p=top_p,
         #top_k=50,
