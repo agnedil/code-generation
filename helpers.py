@@ -10,6 +10,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # max sequence length
 MAX_LEN = 2048
 
+
 def get_tokenizer(model_name: str, ACCESS_TOKEN: str | None = None) -> Any:
 
     if ACCESS_TOKEN:
